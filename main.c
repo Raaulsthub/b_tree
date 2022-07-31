@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "b_tree.h"
+#include "aluno.h"
 
 int menu()
 {
@@ -24,12 +25,11 @@ int main(void)
         op = menu();
         switch (op)
         {
-        case 1:
-            printf("Digite a matricula: ");
-            scanf("%d",&mat);
-            arv_insere(alunos, mat);
+        case 1:;
+            Aluno* a = criar_aluno();
+            arv_insere(alunos, recuperar_matricula(a));
             break;
-        case 2:
+        case 2:;
             printf("Digite a matricula: ");
             scanf("%d", &mat);
             int achou = arv_b_pos_seek(alunos, mat);
@@ -40,6 +40,7 @@ int main(void)
             else
             {
                 printf("Achou\n");
+                printf("%d", achou);
             }
         default:
             break;
