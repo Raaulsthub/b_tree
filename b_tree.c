@@ -215,3 +215,66 @@ void arv_insere(Arv_b_no b, int chave, int pos_seek)
         b->filhos[1] = b2;
     }
 }
+
+
+
+
+Aluno* criar_aluno()
+{
+    Aluno* a = (Aluno*) malloc (sizeof(Aluno));
+    printf("\n\n Digite  o nome do aluno: ");
+    scanf("%s", &a->nome);
+    printf("vc digitou %s\n", a->nome);
+    printf("\n Digite a matricula: ");
+    scanf("%d", &a->matricula);
+    printf("\n Digite a idade: ");
+    scanf("%d", &a->idade);
+    printf("\nDigite o curso: ");
+    scanf("%s", &a->curso);
+    return a;
+}
+
+int tam_struct() {
+    return sizeof(struct aluno);
+}
+
+
+int recuperar_matricula(Aluno* a) {
+    return a->matricula;
+}
+char* recuperar_nome(Aluno* a) {
+    return a->nome;
+}
+int recuperar_idade(Aluno* a) {
+    return a->idade;
+}
+char* recuperar_curso(Aluno* a) {
+    return a->curso;
+}
+
+void arv_b_map(FILE* arq, Arv_b_no root)
+{   
+    Aluno a;
+    fseek(arq, 0, SEEK_SET);
+    while(fread(&a, sizeof(a), 1, arq))
+    {
+        int pos_seek = ftell(arq);
+        printf("MAT: %d, POS_SEEK: %d, NOME: %s\n", a.matricula, pos_seek, a.nome);
+        arv_insere(root, a.matricula, pos_seek);
+    }
+}
+
+/*
+void popula_arvore(FILE* arq, Arvore* arv) {
+    reg_aluno aluno;
+    Indice i;
+    rewind(arq);
+
+    while(fread(&aluno,sizeof(aluno), 1, arq)) {
+        i.matr = aluno.matr;
+        i.pos_seek = ftell(arq) - sizeof(aluno);
+        arv_insere_no(arv, i);
+    }
+}
+
+*/

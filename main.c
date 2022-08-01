@@ -3,7 +3,6 @@
 #include <unistd.h>
 
 #include "b_tree.h"
-#include "aluno.h"
 
 int menu()
 {
@@ -20,15 +19,16 @@ int menu()
 
 int main(void)
 {
-    printf("%d\n ", (1 && 25));
     Arv_b_no alunos = arv_b_cria();
     int op, mat;
     int pos_seek;
 
     FILE *arq;
 
-    if (access("alunos.dat", F_OK) == 0)
-        arq=fopen("alunos.dat","r+"); // arquivo existe
+    if (access("alunos.dat", F_OK) == 0) {
+        arq = fopen("alunos.dat","r+"); // arquivo existe
+        arv_b_map(arq, alunos);
+    }
     else
         arq=fopen("alunos.dat","w+"); // arquivo nao existia
     
@@ -48,14 +48,15 @@ int main(void)
                 free(a);
             } else {
                 printf("%d\n", tam_struct());
-                fwrite(&a,tam_struct(),1,arq);
+                printf("aa %s\n", a->nome);
+                fwrite(a,tam_struct(),1,arq);
 
                 arv_insere(alunos, recuperar_matricula(a), pos_seek);
             }
 
             break;
         case 2:;
-            Aluno* al;
+            Aluno al;
             int achou = 0;
             printf("Digite a matricula: ");
             scanf("%d", &mat);
@@ -66,15 +67,17 @@ int main(void)
             } else {
                 fseek(arq, pos, SEEK_SET);
                 fread(&al, tam_struct(), 1, arq);
-                printf("Matricula: %d\n", recuperar_matricula(al));
-                printf("Nome: %s\n", recuperar_nome(al));
-                printf("Idade: %d\n", recuperar_idade(al));
-                printf("Curso: %s\n", recuperar_curso(al));
+                printf("Matricula: %d\n", recuperar_matricula(&al));
+                printf("Nome: %s\n", recuperar_nome(&al));
+                printf("Idade: %d\n", recuperar_idade(&al));
+                printf("Curso: %s\n", recuperar_curso(&al));
             }
         default:
             break;
         }
     } while (op != 3);
+    
+    fclose(arq);
     /*arv_insere(arv, 1);
     arv_insere(arv, 5);
     arv_insere(arv, 6);
