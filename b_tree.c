@@ -79,25 +79,26 @@ procura_posicao(int n, const Index *a, int chave)
     return hi;
 }
 
-int arv_b_pos_seek(Arv_b_no b, int chave)
+int arv_b_pos_seek(Arv_b_no b, int chave, int *achou)
 {
     int pos;
 
     if (b->num_chaves == 0)
     {
-        return 0;
+        return -1;
     }
 
     // procura chave ou chave maior, para assim procurar em seus filhos
     pos = procura_posicao(b->num_chaves, b->chaves, chave);
 
     if (pos < b->num_chaves && b->chaves[pos].chave == chave)
-    {
-        return 1;
+    {   
+        *achou = 1;
+        return b->chaves[pos].pos_em_arquivo;
     }
     else
     {
-        return (!b->folha && arv_b_pos_seek(b->filhos[pos], chave));
+        return (!b->folha && arv_b_pos_seek(b->filhos[pos], chave, achou));
     }
 }
 
@@ -107,7 +108,7 @@ int arv_b_pos_seek(Arv_b_no b, int chave)
 // retorna 0 se nao splita
 
 static Arv_b_no
-arv_insere_aux(Arv_b_no b, int chave, int *median)
+arv_insere_aux(Arv_b_no b, int chave, int *median, int pos_seek)
 {
     int pos;
     int mid;
@@ -123,17 +124,17 @@ arv_insere_aux(Arv_b_no b, int chave, int *median)
 
     if (b->folha)
     {
-
         // no pai libera indice 0
         memmove(&b->chaves[pos + 1], &b->chaves[pos], sizeof(*(b->chaves)) * (b->num_chaves - pos));
         b->chaves[pos].chave = chave;
+        b->chaves[pos].pos_em_arquivo = pos_seek; //pos no arquivo
         b->num_chaves++;
     }
     else
     {
 
         // inserir no filho
-        b2 = arv_insere_aux(b->filhos[pos], chave, &mid);
+        b2 = arv_insere_aux(b->filhos[pos], chave, &mid, pos_seek);
 
         if (b2)
         {
@@ -189,13 +190,13 @@ arv_insere_aux(Arv_b_no b, int chave, int *median)
     }
 }
 
-void arv_insere(Arv_b_no b, int chave)
+void arv_insere(Arv_b_no b, int chave, int pos_seek)
 {
     Arv_b_no b1; // filho da esquerda
     Arv_b_no b2; // filho da direita
     int median;
 
-    b2 = arv_insere_aux(b, chave, &median);
+    b2 = arv_insere_aux(b, chave, &median, pos_seek);
 
     if (b2)
     {

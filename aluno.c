@@ -32,7 +32,20 @@ Aluno* criar_aluno()
     return a;
 }
 
-int recuperar_matricula(Aluno* a)
-{
+int tam_struct() {
+    return sizeof(struct aluno);
+}
+
+
+int recuperar_matricula(Aluno* a) {
     return a->matricula;
+}
+char* recuperar_nome(Aluno* a) {
+    return a->nome;
+}
+int recuperar_idade(Aluno* a) {
+    return a->idade;
+}
+char* recuperar_curso(Aluno* a) {
+    return a->curso;
 }
