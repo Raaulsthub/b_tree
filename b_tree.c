@@ -216,15 +216,13 @@ void arv_insere(Arv_b_no b, int chave, int pos_seek)
     }
 }
 
-
-
-
+// Cria uma struct Aluno, lendo os seus campos
+// Retorna a instância da estrutura criada
 Aluno* criar_aluno()
 {
     Aluno* a = (Aluno*) malloc (sizeof(Aluno));
     printf("\n\n Digite  o nome do aluno: ");
     scanf("%s", &a->nome);
-    printf("vc digitou %s\n", a->nome);
     printf("\n Digite a matricula: ");
     scanf("%d", &a->matricula);
     printf("\n Digite a idade: ");
@@ -234,24 +232,32 @@ Aluno* criar_aluno()
     return a;
 }
 
+// Retorna o tamanho da struct aluno
 int tam_struct() {
     return sizeof(struct aluno);
 }
 
-
+// Retorna a matrícula do aluno
 int recuperar_matricula(Aluno* a) {
     return a->matricula;
 }
+
+// Retorna o nome do aluno
 char* recuperar_nome(Aluno* a) {
     return a->nome;
 }
+
+// Retorna a idade do aluno
 int recuperar_idade(Aluno* a) {
     return a->idade;
 }
+
+// Retorna o curso do aluno
 char* recuperar_curso(Aluno* a) {
     return a->curso;
 }
 
+// Preenche a árvore com os índices relativos à posição dos dados armazenados no arquivo
 void arv_b_map(FILE* arq, Arv_b_no root)
 {   
     Aluno a;
@@ -259,22 +265,6 @@ void arv_b_map(FILE* arq, Arv_b_no root)
     while(fread(&a, sizeof(a), 1, arq))
     {
         int pos_seek = ftell(arq);
-        printf("MAT: %d, POS_SEEK: %d, NOME: %s\n", a.matricula, pos_seek, a.nome);
         arv_insere(root, a.matricula, pos_seek);
     }
 }
-
-/*
-void popula_arvore(FILE* arq, Arvore* arv) {
-    reg_aluno aluno;
-    Indice i;
-    rewind(arq);
-
-    while(fread(&aluno,sizeof(aluno), 1, arq)) {
-        i.matr = aluno.matr;
-        i.pos_seek = ftell(arq) - sizeof(aluno);
-        arv_insere_no(arv, i);
-    }
-}
-
-*/

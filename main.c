@@ -47,8 +47,6 @@ int main(void)
                 printf("Matricula ja cadastrada!\n");
                 free(a);
             } else {
-                printf("%d\n", tam_struct());
-                printf("aa %s\n", a->nome);
                 fwrite(a,tam_struct(),1,arq);
 
                 arv_insere(alunos, recuperar_matricula(a), pos_seek);
@@ -78,16 +76,4 @@ int main(void)
     } while (op != 3);
     
     fclose(arq);
-    /*arv_insere(arv, 1);
-    arv_insere(arv, 5);
-    arv_insere(arv, 6);
-    arv_insere(arv, 7);
-    arv_insere(arv, 8);
-    arv_insere(arv, 9);
-    arv_insere(arv, 0);
-    arv_insere(arv, 100);
-    printf("SIM: %d", arv_b_pos_seek(arv, 1));
-    printf("SIM: %d", arv_b_pos_seek(arv, 100));
-    printf("SIM: %d", arv_b_pos_seek(arv, 8));
-    printf("NAO: %d", arv_b_pos_seek(arv, 60));*/
 }
